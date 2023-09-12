@@ -52,10 +52,18 @@
             form: '#form-1',
             errorSelector: '.form-message',
             rules: [
-                Validator.isRequired('#fullname'),
-                Validator.isEmail('#email'),
+                Validator.isRequired('#fullname', "Vui lòng nhập chính xác họ tên"),
+                Validator.isRequired('#email'),
+                Validator.isEmail('#email', "Vui lòng nhấp đúng Email. Ví dụ: nvanquoc@gmail.com"),
                 Validator.minLength('#password', 6),
-            ]
+                Validator.isRequired('#password_confirmation'),
+                Validator.isConfirm('#password_confirmation', function(){
+                    return document.querySelector('#form-1 #password').value;
+                },"Mật khẩu nhập lại không chính xác")
+            ],
+            onSubmit: function(data) {
+                console.log(data);
+            }
         })
     </script>
 </body>
