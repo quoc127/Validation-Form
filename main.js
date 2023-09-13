@@ -1,29 +1,54 @@
 function Validator(option) {
   var selectorRules = {};
+
+  function getParentElement(element, selector) {
+    while (element.parentElement) {
+      if (element.parentElement.matches(selector)) {
+        return element.parentElement;
+      }
+      element = element.parentElement;
+    }
+  }
+
   function removeErrorMessage(inputElemnt) {
-    var errorElemnt = inputElemnt.parentElement.querySelector(
-      option.errorSelector
-    );
+    var errorElemnt = getParentElement(
+      inputElemnt,
+      option.formGroupSelector
+    ).querySelector(option.errorSelector);
     errorElemnt.innerText = "";
-    inputElemnt.parentElement.classList.remove("invalid");
+    getParentElement(inputElemnt, option.formGroupSelector).classList.remove(
+      "invalid"
+    );
   }
 
   function validate(inputElemnt, rule) {
-    var errorElemnt = inputElemnt.parentElement.querySelector(
-      option.errorSelector
-    );
+    var errorElemnt = getParentElement(
+      inputElemnt,
+      option.formGroupSelector
+    ).querySelector(option.errorSelector);
     var errorMessage;
     //Get rules for selector
     var rules = selectorRules[rule.selector];
     //loop rules and check
     for (var i = 0; i < rules.length; i++) {
-      errorMessage = rules[i](inputElemnt.value);
+      switch (inputElemnt.type) {
+        case "radio":
+          break;
+        case "checkbox":
+          break;
+        default:
+          errorMessage = rules[i](inputElemnt.value);
+          break;
+      }
+
       if (errorMessage) break;
     }
 
     if (errorMessage) {
       errorElemnt.innerText = errorMessage;
-      inputElemnt.parentElement.classList.add("invalid");
+      getParentElement(inputElemnt, option.formGroupSelector).classList.add(
+        "invalid"
+      );
     } else {
       removeErrorMessage(inputElemnt);
     }
@@ -47,12 +72,16 @@ function Validator(option) {
       if (isFormValid) {
         if (typeof option.onSubmit === "function") {
           var enableInputs = formElement.querySelectorAll("[name]");
-          var formValues = Array.from(enableInputs).reduce(function (values,input) {
-            return (values[input.name] = input.value) && values;
+          var formValues = Array.from(enableInputs).reduce(function (
+            values,
+            input
+          ) {
+            values[input.name] = input.value;
+            return values;
           },
           {});
           option.onSubmit(formValues);
-        } else{
+        } else {
           formElement.submit();
         }
       }

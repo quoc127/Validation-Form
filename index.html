@@ -2,15 +2,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
     <div class="main">
-
         <form action="" method="POST" class="form" id="form-1">
             <h3 class="heading">Thành viên đăng ký</h3>
             <p class="desc">Cùng nhau học lập trình miễn phí tại F8 ❤️</p>
@@ -19,52 +18,77 @@
 
             <div class="form-group">
                 <label for="fullname" class="form-label">Tên đầy đủ</label>
-                <input id="fullname" name="fullname" type="text" placeholder="VD: Sơn Đặng" class="form-control">
+                <input id="fullname" name="fullname" type="text" placeholder="VD: Sơn Đặng" class="form-control" />
                 <span class="form-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="email" class="form-label">Email</label>
-                <input id="email" name="email" type="text" placeholder="VD: email@domain.com" class="form-control">
+                <input id="email" name="email" type="text" placeholder="VD: email@domain.com" class="form-control" />
                 <span class="form-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="password" class="form-label">Mật khẩu</label>
-                <input id="password" name="password" type="password" placeholder="Nhập mật khẩu" class="form-control">
+                <input id="password" name="password" type="password" placeholder="Nhập mật khẩu" class="form-control" />
                 <span class="form-message"></span>
             </div>
 
             <div class="form-group">
                 <label for="password_confirmation" class="form-label">Nhập lại mật khẩu</label>
                 <input id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu"
-                    type="password" class="form-control">
+                    type="password" class="form-control" />
+                <span class="form-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password_confirmation" class="form-label">Giới tính</label>
+                <div>
+                    <input name="gender" type="radio" value="male" class="form-control" />
+                    Nam
+                </div>
+                <div>
+                    <input name="gender" type="radio" value="female" class="form-control" />
+                    Nữ
+                </div>
+                <div>
+                    <input name="gender" type="radio" value="orther" class="form-control" />
+                    Khác
+                </div>
                 <span class="form-message"></span>
             </div>
 
             <button class="form-submit">Đăng ký</button>
         </form>
-
     </div>
     <script src="main.js"></script>
     <script>
         Validator({
-            form: '#form-1',
-            errorSelector: '.form-message',
+            form: "#form-1",
+            formGroupSelector: ".form-group",
+            errorSelector: ".form-message",
             rules: [
-                Validator.isRequired('#fullname', "Vui lòng nhập chính xác họ tên"),
-                Validator.isRequired('#email'),
-                Validator.isEmail('#email', "Vui lòng nhấp đúng Email. Ví dụ: nvanquoc@gmail.com"),
-                Validator.minLength('#password', 6),
-                Validator.isRequired('#password_confirmation'),
-                Validator.isConfirm('#password_confirmation', function(){
-                    return document.querySelector('#form-1 #password').value;
-                },"Mật khẩu nhập lại không chính xác")
+                Validator.isRequired("#fullname", "Vui lòng nhập chính xác họ tên"),
+                Validator.isRequired("#email"),
+                Validator.isEmail(
+                    "#email",
+                    "Vui lòng nhấp đúng Email. Ví dụ: nvanquoc@gmail.com"
+                ),
+                Validator.minLength("#password", 6),
+                Validator.isRequired("#password_confirmation"),
+                Validator.isRequired('input[name="gender"]'),
+                Validator.isConfirm(
+                    "#password_confirmation",
+                    function () {
+                        return document.querySelector("#form-1 #password").value;
+                    },
+                    "Mật khẩu nhập lại không chính xác"
+                ),
             ],
-            onSubmit: function(data) {
+            onSubmit: function (data) {
                 console.log(data);
-            }
-        })
+            },
+        });
     </script>
 </body>
 
