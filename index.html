@@ -42,17 +42,24 @@
             </div>
 
             <div class="form-group">
+                <label for="avata" class="form-label">Ảnh đại diện</label>
+                <input id="avata" name="avata"
+                    type="file" class="form-control" />
+                <span class="form-message"></span>
+            </div>
+
+            <div class="form-group">
                 <label for="password_confirmation" class="form-label">Giới tính</label>
                 <div>
-                    <input name="gender" type="radio" value="male" class="form-control" />
+                    <input name="gender" type="checkbox" value="male" class="form-control" />
                     Nam
                 </div>
                 <div>
-                    <input name="gender" type="radio" value="female" class="form-control" />
+                    <input name="gender" type="checkbox" value="female" class="form-control" />
                     Nữ
                 </div>
                 <div>
-                    <input name="gender" type="radio" value="orther" class="form-control" />
+                    <input name="gender" type="checkbox" value="orther" class="form-control" />
                     Khác
                 </div>
                 <span class="form-message"></span>
@@ -68,22 +75,23 @@
             formGroupSelector: ".form-group",
             errorSelector: ".form-message",
             rules: [
-                Validator.isRequired("#fullname", "Vui lòng nhập chính xác họ tên"),
-                Validator.isRequired("#email"),
-                Validator.isEmail(
-                    "#email",
-                    "Vui lòng nhấp đúng Email. Ví dụ: nvanquoc@gmail.com"
-                ),
-                Validator.minLength("#password", 6),
-                Validator.isRequired("#password_confirmation"),
-                Validator.isRequired('input[name="gender"]'),
-                Validator.isConfirm(
-                    "#password_confirmation",
-                    function () {
-                        return document.querySelector("#form-1 #password").value;
-                    },
-                    "Mật khẩu nhập lại không chính xác"
-                ),
+                // Validator.isRequired("#fullname", "Vui lòng nhập chính xác họ tên"),
+                // Validator.isRequired("#email"),
+                // Validator.isEmail(
+                //     "#email",
+                //     "Vui lòng nhấp đúng Email. Ví dụ: nvanquoc@gmail.com"
+                // ),
+                // Validator.minLength("#password", 6),
+                // Validator.isRequired("#password_confirmation"),
+                // Validator.isRequired("#avata"),
+                // Validator.isRequired('input[name="gender"]'),
+                // Validator.isConfirm(
+                //     "#password_confirmation",
+                //     function () {
+                //         return document.querySelector("#form-1 #password").value;
+                //     },
+                //     "Mật khẩu nhập lại không chính xác"
+                // ),
             ],
             onSubmit: function (data) {
                 console.log(data);

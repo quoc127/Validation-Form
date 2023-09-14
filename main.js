@@ -33,8 +33,10 @@ function Validator(option) {
     for (var i = 0; i < rules.length; i++) {
       switch (inputElemnt.type) {
         case "radio":
-          break;
         case "checkbox":
+          errorMessage = rules[i](
+            formElement.querySelector(rule.selector + ":checked")
+          );
           break;
         default:
           errorMessage = rules[i](inputElemnt.value);
@@ -76,7 +78,26 @@ function Validator(option) {
             values,
             input
           ) {
-            values[input.name] = input.value;
+            switch (input.type) {
+              case "radio":
+                values[input.name] = formElement.querySelector(
+                  'input[name="' + input.name + '"]:checked'
+                ).value;
+                break;
+                case "checkbox":
+                  if (!Array.isArray(values[input.name])) {
+                    values[input.name] = [];
+                  }
+                  if (input.matches(":checked")) {
+                      values[input.name].push(input.value);
+                  }
+                  break;
+              case "file":
+                values[input.name] = input.files;
+                break;
+              default:
+                values[input.name] = input.value;
+            }
             return values;
           },
           {});
@@ -96,8 +117,9 @@ function Validator(option) {
         selectorRules[rule.selector] = [rule.test];
       }
 
-      var inputElemnt = formElement.querySelector(rule.selector);
-      if (inputElemnt) {
+      var inputElemnts = formElement.querySelectorAll(rule.selector);
+
+      Array.from(inputElemnts).forEach(function (inputElemnt) {
         // handle blur out input
         inputElemnt.onblur = function () {
           validate(inputElemnt, rule);
@@ -107,10 +129,21 @@ function Validator(option) {
         inputElemnt.oninput = function () {
           removeErrorMessage(inputElemnt);
         };
-      }
+      });
+
+      // if (inputElemnt) {
+      //   // handle blur out input
+      //   inputElemnt.onblur = function () {
+      //     validate(inputElemnt, rule);
+      //   };
+
+      //   // hanlde when user enter value input
+      //   inputElemnt.oninput = function () {
+      //     removeErrorMessage(inputElemnt);
+      //   };
+      // }
     });
   }
-  // console.log(selectorRules);
 }
 
 // define rule
@@ -118,7 +151,7 @@ Validator.isRequired = function (selector, message) {
   return {
     selector: selector,
     test: function (value) {
-      return value.trim() ? undefined : message || "Vui lòng nhập trường này";
+      return value ? undefined : message || "Vui lòng nhập trường này";
     },
   };
 };
